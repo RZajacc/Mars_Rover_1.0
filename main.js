@@ -14,6 +14,7 @@ function fetchData() {
         .catch(() => console.log("Something went wrong"))
 }
 
+
 // * Function cleaning previous content before generating a new one
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
