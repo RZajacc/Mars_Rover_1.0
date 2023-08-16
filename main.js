@@ -1,14 +1,21 @@
 
-
-
-// * Add an event listener
+// * Add an event listener that is connected to fetch function
 function galleryListener() {
     const displayButton = document.getElementById("show-photos-button");
-    displayButton.addEventListener('click', showPhotos);
+    displayButton.addEventListener('click', fetchData);
+}
+
+// * Connect fetch response to to show photos function
+function fetchData() {
+    const fetchUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=666&page=2&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi";
+    fetch(fetchUrl)
+        .then((response) => response.json())
+        .then((data) => showPhotos(data))
+        .catch(() => console.log("Something went wrong"))
 }
 
 // * Generate photos on a webpage
-function showPhotos() {
+function showPhotos(data) {
 
     const photoDiv = document.getElementById("photo-gallery");
 
