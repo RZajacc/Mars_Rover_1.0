@@ -1,8 +1,15 @@
 
+
+
+// * Add an event listener
+function galleryListener() {
+    const displayButton = document.getElementById("show-photos-button");
+    displayButton.addEventListener('click', showPhotos);
+}
+
 // * Generate photos on a webpage
 function showPhotos() {
 
-    
     const photoDiv = document.getElementById("photo-gallery");
 
      // *Create a div containing cards group
@@ -64,12 +71,5 @@ function showPhotos() {
     }
 }
 
-// * Add an event listener
-function galleryListener() {
-    const displayButton = document.getElementById("show-photos-button");
-    displayButton.addEventListener('click', showPhotos);
-}
-
 // * Call the gallery button listener function
 galleryListener();
-
