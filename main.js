@@ -7,17 +7,26 @@ function galleryListener() {
 
 // * Connect fetch response to to show photos function
 function fetchData() {
-    const fetchUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=666&page=2&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi";
+    const fetchUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=49&page=11&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi";
     fetch(fetchUrl)
         .then((response) => response.json())
         .then((data) => showPhotos(data))
         .catch(() => console.log("Something went wrong"))
 }
 
+// * Function cleaning previous content before generating a new one
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 // * Generate photos on a webpage
 function showPhotos(data) {
 
+    // * Get the gallery div and clean it from existing content
     const photoDiv = document.getElementById("photo-gallery");
+    removeAllChildNodes(photoDiv);
 
      // *Create a div containing cards group
     const cardGroup = document.createElement('div');
