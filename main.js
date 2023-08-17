@@ -4,30 +4,7 @@
 // * -------------------------
 
 
-// * Call range listeners
-startRangeListener();
-endRangeListener();
 
-// * Add event listeners to range slides
-function startRangeListener() {
-    const startSolRange = document.getElementById("start-sol-range");
-    startSolRange.addEventListener('input', changeStartRange);
-}
-
-function endRangeListener() {
-    const endSolRange = document.getElementById('end-sol-range');
-    endSolRange.addEventListener('input', changeEndRange);
-}
-
-function changeStartRange() {
-    const startSolField = document.getElementById("start-sol");
-    startSolField.innerText = this.value;
-}
-
-function changeEndRange() {
-     const endSolField = document.getElementById("end-sol");
-     endSolField.innerText = this.value;
-}
 
 // * ---------------------------
 // * FETCHING DATA FROM AN API *
@@ -125,6 +102,29 @@ function showPhotos(data) {
 
 }
 
-fetch("data/curiosity.json")
-    .then(response => response.json())
-    .then(data => console.log(data.photo_manifest));
+// *-------------------------
+// *--------TEST AREA -------
+// *-------------------------
+
+
+
+let roverForm = document.getElementById('select-rover-form');
+
+roverForm.addEventListener('submit', e => {
+    e.preventDefault();
+    let roverName = document.getElementById("rover-select").value;
+
+    fetch(`data/${roverName}.json`)
+        .then(response => response.json())
+        .then(data => displayRoverInfo(data.photo_manifest));
+})
+
+
+function displayRoverInfo(info) {
+    const roverName = document.getElementById("roverName");
+    roverName.innerText = info.name;
+    const maxSol = document.getElementById("max-sol")
+    maxSol.innerText = info.max_sol;
+    const totalPhotos = document.getElementById("total-photos")
+    totalPhotos.innerText = info.total_photos;
+}

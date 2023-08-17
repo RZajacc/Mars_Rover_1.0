@@ -47,54 +47,53 @@
       <!-- <button type="button" id="show-photos-button" class="btn btn-info">
         Show photos
       </button> -->
-      <form id="rover-form">
+      <form id="select-rover-form">
         <div class="row justify-content-center">
           <div class="col-md-3">
-            <select class="form-select" aria-label="Default select example">
-              <option selected value="1">Curiosity</option>
-              <option value="2">Opportunity</option>
-              <option value="3">Spirit</option>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              id="rover-select"
+            >
+              <option selected value="curiosity">Curiosity</option>
+              <option value="opportunity">Opportunity</option>
+              <option value="spirit">Spirit</option>
             </select>
           </div>
           <div class="col-md-1">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="show-photos-button"
-            >
-              Select
-            </button>
+            <button type="submit" class="btn btn-primary">Select</button>
           </div>
         </div>
       </form>
 
       <form>
-        <p class="text-center">Pick a range of solar days to display photos</p>
+        <!-- ! This will later be displayed dynamically after selecting a Rover -->
         <div class="row justify-content-center">
           <div class="col-md-4">
-            <label for="start-sol-range" class="form-label">Starting day</label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="1"
-              id="start-sol-range"
-            />
+            <p>
+              <strong id="roverName"></strong> was active for
+              <strong id="max-sol"></strong> solar days, and made
+              <strong id="total-photos"></strong> during that time.
+            </p>
           </div>
         </div>
 
         <div class="row justify-content-center">
-          <div class="col-md-4">
-            <label for="end-sol-range" class="form-label">Ending day</label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="1"
-              id="end-sol-range"
-            />
+          <div class="col-md-3">
+            <div class="input-group input-group-sm mb-3">
+              <span class="input-group-text" id="inputGroup-sizing-sm"
+                >Solar day to display</span
+              >
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm"
+              />
+            </div>
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Select</button>
           </div>
         </div>
 
