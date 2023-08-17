@@ -127,4 +127,18 @@ function displayRoverInfo(info) {
     maxSol.innerText = info.max_sol;
     const totalPhotos = document.getElementById("total-photos")
     totalPhotos.innerText = info.total_photos;
+    
+    let solDayForm = document.getElementById("sol-days-select");
+    solDayForm.addEventListener('submit', e => {
+        e.preventDefault();
+        let selectedSolarDay = document.getElementById("selected-solar-day").value;
+        displaySolDayInfo(info.photos, selectedSolarDay);
+    })
+    
 }
+
+function displaySolDayInfo(photoDesc, selectedSolarDay) {
+    // TODO Find a way to filter out spiecific day from array
+    console.log(photoDesc)
+}
+

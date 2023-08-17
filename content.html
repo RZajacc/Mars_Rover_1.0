@@ -66,18 +66,18 @@
         </div>
       </form>
 
-      <form>
-        <!-- ! This will later be displayed dynamically after selecting a Rover -->
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <p>
-              <strong id="roverName"></strong> was active for
-              <strong id="max-sol"></strong> solar days, and made
-              <strong id="total-photos"></strong> during that time.
-            </p>
-          </div>
+      <!-- ! This will later be displayed dynamically after selecting a Rover -->
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <p>
+            <strong id="roverName"></strong> was active for
+            <strong id="max-sol"></strong> solar days, and made
+            <strong id="total-photos"></strong> during that time.
+          </p>
         </div>
+      </div>
 
+      <form id="sol-days-select">
         <div class="row justify-content-center">
           <div class="col-md-3">
             <div class="input-group input-group-sm mb-3">
@@ -89,6 +89,7 @@
                 class="form-control"
                 aria-label="Sizing example input"
                 aria-describedby="inputGroup-sizing-sm"
+                id="selected-solar-day"
               />
             </div>
           </div>
@@ -96,54 +97,51 @@
             <button type="submit" class="btn btn-primary">Select</button>
           </div>
         </div>
+      </form>
 
-        <div class="row text-center">
+      <div class="row justify-content-center">
+        <div class="col-md-4">
           <p>
-            Your selected time frame starts on
-            <strong id="start-sol"></strong> and ends on
-            <strong id="end-sol"></strong> solar day.
+            On <strong id="selected-sol"></strong> sol day rover made total of
+            <strong id="total-photos"></strong> pictures.
           </p>
         </div>
+      </div>
 
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-              />
-              <label class="form-check-label" for="flexSwitchCheckDefault"
-                >Default switch checkbox input</label
-              >
-            </div>
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckChecked"
-                checked
-              />
-              <label class="form-check-label" for="flexSwitchCheckChecked"
-                >Checked switch checkbox input</label
-              >
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-1">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="show-photos-button"
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+            />
+            <label class="form-check-label" for="flexSwitchCheckDefault"
+              >Default switch checkbox input</label
             >
-              Display
-            </button>
+          </div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckChecked"
+              checked
+            />
+            <label class="form-check-label" for="flexSwitchCheckChecked"
+              >Checked switch checkbox input</label
+            >
           </div>
         </div>
-      </form>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary" id="show-photos-button">
+            Display
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- ?Placeholder for photos -->
