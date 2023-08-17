@@ -29,9 +29,9 @@ function changeEndRange() {
      endSolField.innerText = this.value;
 }
 
-// * -------------------------
+// * ---------------------------
 // * FETCHING DATA FROM AN API *
-// * -------------------------
+// * ---------------------------
 
 // * Call the gallery button listener function
 galleryListener();
@@ -125,4 +125,6 @@ function showPhotos(data) {
 
 }
 
-
+fetch("data/curiosity.json")
+    .then(response => response.json())
+    .then(data => console.log(data.photo_manifest));
