@@ -1,4 +1,7 @@
 
+// * Call the gallery button listener function
+galleryListener();
+
 // * Add an event listener that is connected to fetch function
 function galleryListener() {
     const displayButton = document.getElementById("show-photos-button");
@@ -13,7 +16,6 @@ function fetchData() {
         .then((data) => showPhotos(data))
         .catch(() => console.log("Something went wrong"))
 }
-
 
 // * Function cleaning previous content before generating a new one
 function removeAllChildNodes(parent) {
@@ -35,9 +37,9 @@ function showPhotos(data) {
     photoDiv.appendChild(cardGroup);
 
 
-    for (let i = 0; i < data.photos.length; i++) {
-
-        // *Create a card columns and card body
+    // *Loop through requested data
+    data.photos.forEach(element => {
+    
         const colCard = document.createElement('div');
         colCard.setAttribute('class', 'col');
         cardGroup.appendChild(colCard);
@@ -49,8 +51,8 @@ function showPhotos(data) {
         // *Create card body elements
         const cardPhoto = document.createElement('img');
         cardPhoto.setAttribute('class', 'card-img-top');
-        cardPhoto.setAttribute('src', data.photos[i].img_src);
-        cardPhoto.setAttribute('alt', "Made on: " + data.photos[i].earth_date);
+        cardPhoto.setAttribute('src', element.img_src);
+        cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
         cardBody.appendChild(cardPhoto);
 
         const photoDesc = document.createElement('ul');
@@ -59,22 +61,22 @@ function showPhotos(data) {
 
         const roverLi = document.createElement('li');
         roverLi.setAttribute('class', 'list-group-item');
-        roverLi.innerHTML = "<strong>Rover : </strong>" + data.photos[i].rover.name;
+        roverLi.innerHTML = "<strong>Rover : </strong>" + element.rover.name;
         photoDesc.appendChild(roverLi);
 
         const solLi = document.createElement('li');
         solLi.setAttribute('class', 'list-group-item');
-        solLi.innerHTML = "<strong>Solar day : </strong>" + data.photos[i].sol;
+        solLi.innerHTML = "<strong>Solar day : </strong>" + element.sol;
         photoDesc.appendChild(solLi);
 
         const idLi = document.createElement('li');
         idLi.setAttribute('class', 'list-group-item');
-        idLi.innerHTML = "<strong>Photo ID : </strong>" + data.photos[i].id;
+        idLi.innerHTML = "<strong>Photo ID : </strong>" + element.id;
         photoDesc.appendChild(idLi);
 
         const camLi = document.createElement('li');
         camLi.setAttribute('class', 'list-group-item');
-        camLi.innerHTML = "<strong>Camera : </strong>" + data.photos[i].camera.name;
+        camLi.innerHTML = "<strong>Camera : </strong>" + element.camera.name;
         photoDesc.appendChild(camLi);
 
         // *Create a card footer
@@ -82,11 +84,11 @@ function showPhotos(data) {
         cardFooter.setAttribute('class', 'card-footer');
         const footerContent = document.createElement('small');
         footerContent.setAttribute('class', 'text-body-secondary');
-        footerContent.innerHTML = "Earth date : " + data.photos[i].earth_date;
+        footerContent.innerHTML = "Earth date : " + element.earth_date;
         cardBody.appendChild(cardFooter);
         cardFooter.appendChild(footerContent);
-    }
+    });
+
 }
 
-// * Call the gallery button listener function
-galleryListener();
+
