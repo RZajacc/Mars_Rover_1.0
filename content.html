@@ -71,38 +71,39 @@
       <form>
         <p class="text-center">Pick a range of solar days to display photos</p>
         <div class="row justify-content-center">
-          <div class="col-md-6">
-            <label for="customRange3" class="form-label">Starting day</label>
+          <div class="col-md-4">
+            <label for="start-sol-range" class="form-label">Starting day</label>
             <input
               type="range"
               class="form-range"
               min="0"
               max="5"
               step="1"
-              id="customRange3"
+              id="start-sol-range"
             />
-          </div>
-          <div class="col-md-1">
-            <input type="text" />
           </div>
         </div>
 
         <div class="row justify-content-center">
-          <div class="col-md-6">
-            <label for="customRange3" class="form-label">Ending day</label>
+          <div class="col-md-4">
+            <label for="end-sol-range" class="form-label">Ending day</label>
             <input
               type="range"
               class="form-range"
               min="0"
               max="5"
               step="1"
-              id="customRange3"
-              oninput="this.nextElementSibling.value = this.value"
+              id="end-sol-range"
             />
           </div>
-          <div class="col-md-1">
-            <input type="text" />
-          </div>
+        </div>
+
+        <div class="row text-center">
+          <p>
+            Your selected time frame starts on
+            <strong id="start-sol"></strong> and ends on
+            <strong id="end-sol"></strong> solar day.
+          </p>
         </div>
 
         <div class="row justify-content-center">

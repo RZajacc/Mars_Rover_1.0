@@ -1,4 +1,38 @@
 
+// * -------------------------
+// * SELECTORS FOR REQUESTS *
+// * -------------------------
+
+
+// * Call range listeners
+startRangeListener();
+endRangeListener();
+
+// * Add event listeners to range slides
+function startRangeListener() {
+    const startSolRange = document.getElementById("start-sol-range");
+    startSolRange.addEventListener('input', changeStartRange);
+}
+
+function endRangeListener() {
+    const endSolRange = document.getElementById('end-sol-range');
+    endSolRange.addEventListener('input', changeEndRange);
+}
+
+function changeStartRange() {
+    const startSolField = document.getElementById("start-sol");
+    startSolField.innerText = this.value;
+}
+
+function changeEndRange() {
+     const endSolField = document.getElementById("end-sol");
+     endSolField.innerText = this.value;
+}
+
+// * -------------------------
+// * FETCHING DATA FROM AN API *
+// * -------------------------
+
 // * Call the gallery button listener function
 galleryListener();
 
