@@ -159,6 +159,46 @@ function displaySolDayInfo(photoDesc, selectedSolarDay) {
         totalPhotosSelectedDay.innerText = 0;
     }
     
-    console.log(camerasUsed);
+    displayCameraSelectors(camerasUsed);
 }
 
+// * Display switches for cameras that were used at that specific day
+function displayCameraSelectors(camerasUsed) {
+    const camerasList = document.getElementById("camera-selectors");
+    const availableCameras = {
+        FHAZ: "Front Hazard Avoidance Camera",
+        RHAZ: "Rear Hazard Avoidance Camera",
+        MAST: "Mast Camera",
+        CHEMCAM: "Chemistry and Camera Complex",
+        MAHLI: "Mars Hand Lens Imager",
+        MARDI: "Mars Descent Imager",
+        NAVCAM: "Navigation Camera",
+        PANCAM: "Panoramic Camera",
+        MINITES: "Miniature Thermal Emission Spectrometer (Mini-TES)",
+    };
+
+    camerasUsed.forEach((camera) => {
+
+        // * Create a Div containing switches
+        const camSwitchDiv = document.createElement('div');
+        camSwitchDiv.setAttribute("class", "form-check form-switch");
+        camerasList.appendChild(camSwitchDiv);
+        
+        // * Create switch elements
+        const camSwitch = document.createElement('input');
+        camSwitch.setAttribute("class", "form-check-input");
+        camSwitch.setAttribute("type", "checkbox");
+        camSwitch.setAttribute("role", "switch");
+        camSwitch.setAttribute("id", camera);
+        camSwitch.setAttribute("value", camera);
+        camSwitch.setAttribute("checked", "");
+        camSwitchDiv.appendChild(camSwitch);
+
+        // * Create switch labels
+        const camSwitchLabel = document.createElement("label");
+        camSwitchLabel.setAttribute("class", "form-check-label");
+        camSwitchLabel.setAttribute("for", camera);
+        camSwitchLabel.innerText = availableCameras[camera];
+        camSwitchDiv.appendChild(camSwitchLabel);
+    })
+}

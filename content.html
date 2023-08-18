@@ -110,31 +110,33 @@
 
       <div class="row justify-content-center">
         <div class="col-md-4">
-          <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
-            />
-            <label class="form-check-label" for="flexSwitchCheckDefault"
-              >Default switch checkbox input</label
-            >
-          </div>
-          <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckChecked"
-              checked
-            />
-            <label class="form-check-label" for="flexSwitchCheckChecked"
-              >Checked switch checkbox input</label
-            >
-          </div>
+          <p>
+            Each rover has a diffent set of cameras. Select the ones that are
+            interesting for you:
+          </p>
         </div>
       </div>
+
+      <form id="cameras-select-form">
+        <div class="row justify-content-center">
+          <div class="col-md-4" id="camera-selectors">
+            <!-- <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                value="FHAZ"
+                checked
+              />
+              <label class="form-check-label" for="flexSwitchCheckDefault"
+                >FHAZ</label
+              >
+            </div> -->
+          </div>
+        </div>
+      </form>
+
       <div class="row justify-content-center">
         <div class="col-md-1">
           <button type="submit" class="btn btn-primary" id="show-photos-button">
