@@ -138,7 +138,27 @@ function displayRoverInfo(info) {
 }
 
 function displaySolDayInfo(photoDesc, selectedSolarDay) {
-    // TODO Find a way to filter out spiecific day from array
-    console.log(photoDesc)
+
+    // * Find the array containing selected solar day
+    const selectedData = photoDesc.filter((entry) => {
+        const selectedSolarDayInt = parseInt(selectedSolarDay);
+        return entry.sol === selectedSolarDayInt;
+    })
+
+    // * Update data in html with data relevant to selection
+    const selectedSolDay = document.getElementById("selected-sol");
+    selectedSolDay.innerText = selectedSolarDay;
+    const totalPhotosSelectedDay = document.getElementById("total-photos-selected-day");
+    let camerasUsed;
+
+    // * If there's no match the list still will contain empty array
+    if (selectedData.length != 0) {
+        totalPhotosSelectedDay.innerText = selectedData[0].total_photos;
+        camerasUsed = selectedData[0].cameras;
+    } else {
+        totalPhotosSelectedDay.innerText = 0;
+    }
+    
+    console.log(camerasUsed);
 }
 
