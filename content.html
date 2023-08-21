@@ -43,10 +43,7 @@
     </nav>
 
     <div class="container-fluid" id="gallery-nav">
-      <!-- Currently working button to import pictures -->
-      <!-- <button type="button" id="show-photos-button" class="btn btn-info">
-        Show photos
-      </button> -->
+      <h2 class="text-center">Please select a rover:</h1>
       <form id="select-rover-form">
         <div class="row justify-content-center">
           <div class="col-md-3">
@@ -68,85 +65,50 @@
 
       <!-- ! This will later be displayed dynamically after selecting a Rover -->
       <div class="row justify-content-center">
-        <div class="col-md-4">
-          <p>
-            <strong id="roverName"></strong> was active for
-            <strong id="max-sol"></strong> solar days, and made
-            <strong id="total-photos"></strong> during that time.
-          </p>
+        <div class="col-md-4" id="rover-info">
+    
         </div>
       </div>
 
       <form id="sol-days-select">
         <div class="row justify-content-center">
           <div class="col-md-3">
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text" id="inputGroup-sizing-sm"
-                >Solar day to display</span
-              >
-              <input
-                type="text"
-                class="form-control"
-                aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-sm"
-                id="selected-solar-day"
-              />
+            <div class="input-group input-group-sm mb-3" id="solar-day-input">
             </div>
           </div>
-          <div class="col-md-1">
-            <button type="submit" class="btn btn-primary">Select</button>
+          <div class="col-md-1"id='sol-day-submit-div'>
           </div>
         </div>
       </form>
 
       <div class="row justify-content-center">
-        <div class="col-md-4">
-          <p>
-            On <strong id="selected-sol"></strong> sol day rover made total of
-            <strong id="total-photos-selected-day"></strong> pictures.
-          </p>
+        <div class="col-md-4" id="sol-day-desc">
         </div>
       </div>
 
       <div class="row justify-content-center">
         <div class="col-md-4">
-          <p>
-            Each rover has a diffent set of cameras. Select the ones that are
-            interesting for you:
+          <p id="cameras-info">
+           
           </p>
         </div>
       </div>
 
       <form id="cameras-select-form">
         <div class="row justify-content-center">
-          <div class="col-md-4" id="camera-selectors">
-            <!-- <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                role="switch"
-                id="flexSwitchCheckDefault"
-                value="FHAZ"
-                checked
-              />
-              <label class="form-check-label" for="flexSwitchCheckDefault"
-                >FHAZ</label
-              >
-            </div> -->
-          </div>
+          <div class="col-md-4" id="camera-selectors"></div>
         </div>
         <div class="row justify-content-center">
-          <div class="col-md-1">
-            <button type="submit" class="btn btn-primary">Select</button>
+          <div class="col-md-1" id="camera-select-submit">
           </div>
         </div>
       </form>
 
       <div class="row justify-content-center">
         <div class="col-md-1">
-          <button type="submit" class="btn btn-primary" id="show-photos-button">
+          <!-- <button type="submit" class="btn btn-primary" id="show-photos-button">
             Display
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

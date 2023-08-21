@@ -26,8 +26,12 @@ body {
 }
 
 #gallery-nav {
-    margin: 25px;
+    margin: 30px 0px;
     /* width: 30%; */
+}
+
+#gallery-nav > * {
+    margin: 15px 0px;
 }
 
 #photo-gallery {

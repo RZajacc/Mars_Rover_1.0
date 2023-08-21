@@ -2,26 +2,203 @@
 // * -------------------------
 // * SELECTORS FOR REQUESTS *
 // * -------------------------
+// * This function starts the selection of data to display
+chooseRover();
 
 
+function chooseRover() {
+    const roverForm = document.getElementById('select-rover-form');
+    roverForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const roverName = document.getElementById("rover-select").value;
+
+        fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${roverName}/?api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`)
+            .then(response => response.json())
+            .then(data => displayRoverInfo(data.photo_manifest, roverName));
+})
+}
+
+
+function displayRoverInfo(info, roverName) {
+
+    // * Clean all the data below
+    const roverInfo = document.getElementById("rover-info");
+    removeAllChildNodes(roverInfo);
+    const solDayDescDiv = document.getElementById("sol-day-desc");
+    removeAllChildNodes(solDayDescDiv);
+    const camerasList = document.getElementById("camera-selectors");
+    removeAllChildNodes(camerasList);
+    const camInfo = document.getElementById("cameras-info");
+    camInfo.innerHTML = "";
+
+    // * Generate description of selected rover
+    const roverParagraph = document.createElement('p');
+    roverParagraph.innerHTML = `<strong>${info.name}</strong> was active for 
+    <strong>${info.max_sol}</strong> solar days, and made 
+    <strong>${info.total_photos}</strong> during that time. Current mission 
+    status is <strong id="mission-status">${info.status.toUpperCase()}</strong>.`;
+    roverInfo.appendChild(roverParagraph);
+   
+    // * Check mission status and change it's color accordingly
+    const missionStatus = document.getElementById("mission-status");
+    
+    if (info.status === "active") {
+        missionStatus.innerText = info.status.toUpperCase();
+        missionStatus.setAttribute('style', 'color:green');
+    } else {
+        missionStatus.innerText = info.status.toUpperCase();
+        missionStatus.setAttribute('style', 'color:red');
+    }
+    
+    // * Geneate a field receiving selected solar day
+    const solDayInput = document.getElementById('solar-day-input');
+    removeAllChildNodes(solDayInput);
+    const solDaylabel = document.createElement('span');
+    solDaylabel.setAttribute('class', 'input-group-text');
+    solDaylabel.setAttribute('id', 'inputGroup-sizing-sm');
+    solDaylabel.innerText = 'Solar day to display';
+    solDayInput.appendChild(solDaylabel);
+
+    const solDayInputField = document.createElement('input');
+    solDayInputField.setAttribute('type', 'text');
+    solDayInputField.setAttribute('class', 'form-control');
+    solDayInputField.setAttribute('aria-label', 'Sizing example input');
+    solDayInputField.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
+    solDayInputField.setAttribute('id', 'selected-solar-day');
+    solDayInput.appendChild(solDayInputField);
+
+    // * Create submit button
+    const solDaySubmitDiv = document.getElementById('sol-day-submit-div')
+    removeAllChildNodes(solDaySubmitDiv);
+    const solDaySubmit = document.createElement('button');
+    solDaySubmit.setAttribute('type', 'submit');
+    solDaySubmit.setAttribute('class', 'btn btn-primary');
+    solDaySubmit.innerText = 'Select';
+    solDaySubmitDiv.appendChild(solDaySubmit);
+
+    // * Submit a form with selected day
+    let solDayForm = document.getElementById("sol-days-select");
+    solDayForm.addEventListener('submit', e => {
+        e.preventDefault();
+        let selectedSolarDay = document.getElementById("selected-solar-day").value;
+        let camList = [];
+        displaySolDayInfo(info.photos, roverName, selectedSolarDay);
+    })
+}
+
+function displaySolDayInfo(photoDesc, roverName, selectedSolarDay) {
+
+
+    // * Find the array containing selected solar day
+    const selectedData = photoDesc.filter((entry) => {
+        const selectedSolarDayInt = parseInt(selectedSolarDay);
+        return entry.sol === selectedSolarDayInt;
+    })
+
+    const solDayDescDiv = document.getElementById("sol-day-desc");
+    removeAllChildNodes(solDayDescDiv);
+
+    const solDayDescParagraph = document.createElement('p');
+    solDayDescDiv.appendChild(solDayDescParagraph);
+    let solDayValue;
+    let camerasUsed;
+
+     // * If there's no match the list still will contain empty array
+    if (selectedData.length != 0) {
+        solDayValue = selectedData[0].total_photos;
+        camerasUsed = selectedData[0].cameras;
+    } else {
+        solDayValue = 0;
+    }
+
+    solDayDescParagraph.innerHTML = `On <strong>${selectedSolarDay}</strong> 
+    solar day rover made a total of <strong>${solDayValue}</strong> pictures.`;
+   
+    displayCameraSelectors(camerasUsed, roverName, selectedSolarDay);
+}
+
+// * Display switches for cameras that were used at that specific day
+function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
+
+    const camInfo = document.getElementById("cameras-info");
+    camInfo.innerHTML = "Each rover has a diffent set of cameras. Select the ones that are interesting for you:";
+   
+    const camSelectSubmitDiv = document.getElementById("camera-select-submit");
+    removeAllChildNodes(camSelectSubmitDiv);
+
+    const camerasList = document.getElementById("camera-selectors");
+    removeAllChildNodes(camerasList);
+
+    const availableCameras = {
+        ENTRY: "Entry camera",
+        FHAZ: "Front Hazard Avoidance Camera",
+        RHAZ: "Rear Hazard Avoidance Camera",
+        MAST: "Mast Camera",
+        CHEMCAM: "Chemistry and Camera Complex",
+        MAHLI: "Mars Hand Lens Imager",
+        MARDI: "Mars Descent Imager",
+        NAVCAM: "Navigation Camera",
+        PANCAM: "Panoramic Camera",
+        MINITES: "Miniature Thermal Emission Spectrometer (Mini-TES)",
+    };
+
+    camerasUsed.forEach((camera) => {
+
+        // * Create a Div containing switches
+        const camSwitchDiv = document.createElement('div');
+        camSwitchDiv.setAttribute("class", "form-check form-switch");
+        camerasList.appendChild(camSwitchDiv);
+        
+        // * Create switch elements
+        const camSwitch = document.createElement('input');
+        camSwitch.setAttribute("class", "form-check-input");
+        camSwitch.setAttribute("type", "checkbox");
+        camSwitch.setAttribute("role", "switch");
+        camSwitch.setAttribute("id", camera);
+        camSwitch.setAttribute("value", camera);
+        camSwitch.setAttribute("checked", "");
+        camSwitchDiv.appendChild(camSwitch);
+
+        // * Create switch labels
+        const camSwitchLabel = document.createElement("label");
+        camSwitchLabel.setAttribute("class", "form-check-label");
+        camSwitchLabel.setAttribute("for", camera);
+        camSwitchLabel.innerText = availableCameras[camera];
+        camSwitchDiv.appendChild(camSwitchLabel);
+    })
+
+    const camSelectSubmit = document.createElement('button');
+    camSelectSubmit.setAttribute('type', 'submit');
+    camSelectSubmit.setAttribute('class', 'btn btn-primary');
+    camSelectSubmit.setAttribute('id', 'show-photos-button');
+    camSelectSubmit.innerText = "Display";
+    camSelectSubmitDiv.appendChild(camSelectSubmit);
+
+    const camSelectForm = document.getElementById("cameras-select-form");
+    camSelectForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let nodes = camerasList.childNodes;
+        let camList = [];
+        nodes.forEach((node) => {
+            camList.push(node.firstChild.value);
+            // console.log(node.firstChild);
+            // console.log(node.firstChild.value);
+            console.log(node.checked === undefined);
+        })
+
+        fetchData(roverName, selectedSolarDay, camList);
+    })
+}
 
 
 // * ---------------------------
 // * FETCHING DATA FROM AN API *
 // * ---------------------------
 
-// * Call the gallery button listener function
-galleryListener();
-
-// * Add an event listener that is connected to fetch function
-function galleryListener() {
-    const displayButton = document.getElementById("show-photos-button");
-    displayButton.addEventListener('click', fetchData);
-}
-
 // * Connect fetch response to to show photos function
-function fetchData() {
-    const fetchUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=49&page=11&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi";
+function fetchData(roverName, selectedSolarDay, camList) {
+    
+    const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&page=1&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
         .then((data) => showPhotos(data))
@@ -102,121 +279,9 @@ function showPhotos(data) {
 
 }
 
-// *-------------------------
-// *--------TEST AREA -------
-// *-------------------------
-
-// * This function starts the selection of data to display
-chooseRover();
 
 
-function chooseRover() {
-    const roverForm = document.getElementById('select-rover-form');
-    roverForm.addEventListener('submit', e => {
-        e.preventDefault();
-        const roverName = document.getElementById("rover-select").value;
-
-        fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${roverName}/?api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`)
-            .then(response => response.json())
-            .then(data => displayRoverInfo(data.photo_manifest));
-})
-}
 
 
-function displayRoverInfo(info) {
-    const roverName = document.getElementById("roverName");
-    roverName.innerText = info.name;
-    const maxSol = document.getElementById("max-sol")
-    maxSol.innerText = info.max_sol;
-    const totalPhotos = document.getElementById("total-photos")
-    totalPhotos.innerText = info.total_photos;
-    
-    let solDayForm = document.getElementById("sol-days-select");
-    solDayForm.addEventListener('submit', e => {
-        e.preventDefault();
-        let selectedSolarDay = document.getElementById("selected-solar-day").value;
-        displaySolDayInfo(info.photos, selectedSolarDay);
-    })
-    
-}
 
-function displaySolDayInfo(photoDesc, selectedSolarDay) {
 
-    // * Find the array containing selected solar day
-    const selectedData = photoDesc.filter((entry) => {
-        const selectedSolarDayInt = parseInt(selectedSolarDay);
-        return entry.sol === selectedSolarDayInt;
-    })
-
-    // * Update data in html with data relevant to selection
-    const selectedSolDay = document.getElementById("selected-sol");
-    selectedSolDay.innerText = selectedSolarDay;
-    const totalPhotosSelectedDay = document.getElementById("total-photos-selected-day");
-    let camerasUsed;
-
-    // * If there's no match the list still will contain empty array
-    if (selectedData.length != 0) {
-        totalPhotosSelectedDay.innerText = selectedData[0].total_photos;
-        camerasUsed = selectedData[0].cameras;
-    } else {
-        totalPhotosSelectedDay.innerText = 0;
-    }
-    
-    // const camerasList = document.getElementById("camera-selectors");
-    // removeAllChildNodes(camerasList);
-    displayCameraSelectors(camerasUsed);
-}
-
-// * Display switches for cameras that were used at that specific day
-function displayCameraSelectors(camerasUsed) {
-    const camerasList = document.getElementById("camera-selectors");
-    const availableCameras = {
-        FHAZ: "Front Hazard Avoidance Camera",
-        RHAZ: "Rear Hazard Avoidance Camera",
-        MAST: "Mast Camera",
-        CHEMCAM: "Chemistry and Camera Complex",
-        MAHLI: "Mars Hand Lens Imager",
-        MARDI: "Mars Descent Imager",
-        NAVCAM: "Navigation Camera",
-        PANCAM: "Panoramic Camera",
-        MINITES: "Miniature Thermal Emission Spectrometer (Mini-TES)",
-    };
-
-    removeAllChildNodes(camerasList);
-
-    camerasUsed.forEach((camera) => {
-
-        // * Create a Div containing switches
-        const camSwitchDiv = document.createElement('div');
-        camSwitchDiv.setAttribute("class", "form-check form-switch");
-        camerasList.appendChild(camSwitchDiv);
-        
-        // * Create switch elements
-        const camSwitch = document.createElement('input');
-        camSwitch.setAttribute("class", "form-check-input");
-        camSwitch.setAttribute("type", "checkbox");
-        camSwitch.setAttribute("role", "switch");
-        camSwitch.setAttribute("id", camera);
-        camSwitch.setAttribute("value", camera);
-        camSwitch.setAttribute("checked", "");
-        camSwitchDiv.appendChild(camSwitch);
-
-        // * Create switch labels
-        const camSwitchLabel = document.createElement("label");
-        camSwitchLabel.setAttribute("class", "form-check-label");
-        camSwitchLabel.setAttribute("for", camera);
-        camSwitchLabel.innerText = availableCameras[camera];
-        camSwitchDiv.appendChild(camSwitchLabel);
-    })
-
-    const camSelectForm = document.getElementById("cameras-select-form");
-    camSelectForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        // const randomSwitch = document.getElementById("FHAZ").value
-        // console.log(randomSwitch);
-        console.log(camerasList.childNodes);
-    })
-}
-
-// TODO - display button to receive data from switches and make it an array
-// TODO - Collect it all together to make a request
