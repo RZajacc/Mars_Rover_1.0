@@ -106,18 +106,21 @@ function showPhotos(data) {
 // *--------TEST AREA -------
 // *-------------------------
 
+// * This function starts the selection of data to display
+chooseRover();
 
 
-let roverForm = document.getElementById('select-rover-form');
+function chooseRover() {
+    const roverForm = document.getElementById('select-rover-form');
+    roverForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const roverName = document.getElementById("rover-select").value;
 
-roverForm.addEventListener('submit', e => {
-    e.preventDefault();
-    let roverName = document.getElementById("rover-select").value;
-
-    fetch(`data/${roverName}.json`)
-        .then(response => response.json())
-        .then(data => displayRoverInfo(data.photo_manifest));
+        fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${roverName}/?api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`)
+            .then(response => response.json())
+            .then(data => displayRoverInfo(data.photo_manifest));
 })
+}
 
 
 function displayRoverInfo(info) {
@@ -159,6 +162,8 @@ function displaySolDayInfo(photoDesc, selectedSolarDay) {
         totalPhotosSelectedDay.innerText = 0;
     }
     
+    // const camerasList = document.getElementById("camera-selectors");
+    // removeAllChildNodes(camerasList);
     displayCameraSelectors(camerasUsed);
 }
 
@@ -176,6 +181,8 @@ function displayCameraSelectors(camerasUsed) {
         PANCAM: "Panoramic Camera",
         MINITES: "Miniature Thermal Emission Spectrometer (Mini-TES)",
     };
+
+    removeAllChildNodes(camerasList);
 
     camerasUsed.forEach((camera) => {
 
@@ -201,4 +208,15 @@ function displayCameraSelectors(camerasUsed) {
         camSwitchLabel.innerText = availableCameras[camera];
         camSwitchDiv.appendChild(camSwitchLabel);
     })
+
+    const camSelectForm = document.getElementById("cameras-select-form");
+    camSelectForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        // const randomSwitch = document.getElementById("FHAZ").value
+        // console.log(randomSwitch);
+        console.log(camerasList.childNodes);
+    })
 }
+
+// TODO - display button to receive data from switches and make it an array
+// TODO - Collect it all together to make a request
