@@ -244,6 +244,7 @@ function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
 
     if (pagesCount > 1) {
         
+        // ? Create navigation and Previous element tab
         const pagesDiv = document.getElementById('pages');
         const paginationNav = document.createElement('nav');
         paginationNav.setAttribute('aria-label', 'pagination-nav');
@@ -263,7 +264,6 @@ function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         paginationUl.appendChild(previousLi);
 
         previousHref.addEventListener('click', () => {
-            
             if (page > 1) {
                 targetPage = page - 1;
                 removeAllChildNodes(photoDiv);
@@ -271,46 +271,75 @@ function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
             }
         })
 
-        // * Generate elements in between
-        if (pagesCount <= 3) {
-            for (let i = page; i < pagesCount+1; i++) {
-                const paginationLi = document.createElement('li');
-                paginationLi.setAttribute('class', 'page-item');
-                const paginationHref = document.createElement('a');
-                if (i === page) {
-                    paginationHref.setAttribute('class', 'page-link active');
-                } else {
-                    paginationHref.setAttribute('class', 'page-link');
-                }
-                
-                paginationHref.setAttribute('href', '#');
-                paginationHref.innerText = i;
-                paginationLi.appendChild(paginationHref);
-                paginationUl.appendChild(paginationLi);
-                paginationHref.addEventListener('click', () => {
-                    targetPage = parseInt(paginationHref.innerText);
-                    removeAllChildNodes(photoDiv);
-                    fetchBasic(roverName, selectedSolarDay, pagesCount, targetPage);
-                })
+        // ? If first page show 2 tabs more unless there are only 2 tabs
+        if (page === 1 && pagesCount>=3) {
+            for (let i = page; i < page+3; i++) {
+            const paginationLi = document.createElement('li');
+            paginationLi.setAttribute('class', 'page-item');
+            const paginationHref = document.createElement('a');
+            if (i === page) {
+                paginationHref.setAttribute('class', 'page-link active');
+            } else {
+                paginationHref.setAttribute('class', 'page-link');
             }
-        } else {
-            for (let i = page; i < page + 3; i++) {
-                const paginationLi = document.createElement('li');
-                paginationLi.setAttribute('class', 'page-item');
-                const paginationHref = document.createElement('a');
-                if (i === page) {
-                    paginationHref.setAttribute('class', 'page-link active');
-                } else {
-                    paginationHref.setAttribute('class', 'page-link');
-                }
-                paginationHref.setAttribute('href', '#');
-                paginationHref.innerText = i;
-                paginationLi.appendChild(paginationHref);
-                paginationUl.appendChild(paginationLi);
-                paginationHref.addEventListener('click', () => {
-                    currentPage = parseInt(paginationHref.innerText);
-                    console.log("Current page",currentPage);
-                })
+            
+            paginationHref.setAttribute('href', '#');
+            paginationHref.innerText = i;
+            paginationLi.appendChild(paginationHref);
+            paginationUl.appendChild(paginationLi);
+            paginationHref.addEventListener('click', () => {
+                targetPage = parseInt(paginationHref.innerText);
+                removeAllChildNodes(photoDiv);
+                fetchBasic(roverName, selectedSolarDay, pagesCount, targetPage);
+            })
+            }
+        }
+
+        // ? If page in the middle
+        if (page > 1 && page < pagesCount) {
+            for (let i = page-1; i < page+2; i++) {
+            const paginationLi = document.createElement('li');
+            paginationLi.setAttribute('class', 'page-item');
+            const paginationHref = document.createElement('a');
+            if (i === page) {
+                paginationHref.setAttribute('class', 'page-link active');
+            } else {
+                paginationHref.setAttribute('class', 'page-link');
+            }
+            
+            paginationHref.setAttribute('href', '#');
+            paginationHref.innerText = i;
+            paginationLi.appendChild(paginationHref);
+            paginationUl.appendChild(paginationLi);
+            paginationHref.addEventListener('click', () => {
+                targetPage = parseInt(paginationHref.innerText);
+                removeAllChildNodes(photoDiv);
+                fetchBasic(roverName, selectedSolarDay, pagesCount, targetPage);
+            })
+            }
+        }
+
+        // ? If last page unless there are only 2 tabs
+        if (page === pagesCount && pagesCount >=3) {
+            for (let i = page-2; i < pagesCount+1; i++) {
+            const paginationLi = document.createElement('li');
+            paginationLi.setAttribute('class', 'page-item');
+            const paginationHref = document.createElement('a');
+            if (i === page) {
+                paginationHref.setAttribute('class', 'page-link active');
+            } else {
+                paginationHref.setAttribute('class', 'page-link');
+            }
+            
+            paginationHref.setAttribute('href', '#');
+            paginationHref.innerText = i;
+            paginationLi.appendChild(paginationHref);
+            paginationUl.appendChild(paginationLi);
+            paginationHref.addEventListener('click', () => {
+                targetPage = parseInt(paginationHref.innerText);
+                removeAllChildNodes(photoDiv);
+                fetchBasic(roverName, selectedSolarDay, pagesCount, targetPage);
+            })
             }
         }
         
