@@ -101,7 +101,7 @@ function displayRoverInfo(info, roverName) {
     
     solDayInputField.addEventListener('change', () => {
         displaySolDayInfo(info.photos, roverName, solDayInputField.value);
-        fetchData(roverName, solDayInputField.value)
+        fetchBasic(roverName, solDayInputField.value)
     })
 }
 
@@ -170,17 +170,18 @@ function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
     camSelect.appendChild(selectAll);
 
     camSelect.addEventListener('change', () => {
-        console.log("Camera change triggered");
-        console.log(camSelect.value);
+        if (camSelect.value === "ALL") {
+            fetchBasic(roverName, selectedSolarDay);
+        } else {
+            fetchExpanded(roverName, selectedSolarDay, camSelect.value);
+        }
     })
 
     camerasUsed.forEach((camera) => {
-
         const selectOption = document.createElement('option');
         selectOption.setAttribute('value', camera);
         selectOption.innerText = availableCameras[camera];
         camSelect.appendChild(selectOption);
-        
     })
 }
 
@@ -189,10 +190,19 @@ function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
 // * FETCHING DATA FROM AN API *
 // * ---------------------------
 
-// * Connect fetch response to to show photos function
-function fetchData(roverName, selectedSolarDay, camList) {
+// * BASIC FETCH - Takes rover name and solar day
+function fetchBasic(roverName, selectedSolarDay) {
     
     const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&page=1&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
+    fetch(fetchUrl)
+        .then((response) => response.json())
+        .then((data) => showPhotos(data))
+        .catch(() => console.log("Something went wrong"))
+}
+
+function fetchExpanded(roverName, selectedSolarDay, camName) {
+    
+    const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&camera=${camName}&page=1&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
         .then((data) => showPhotos(data))
