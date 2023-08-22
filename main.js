@@ -235,6 +235,8 @@ function showPhotos(data, pagesCount) {
     // * Get the gallery div and clean it from existing content
     const photoDiv = document.getElementById("photo-gallery");
     removeAllChildNodes(photoDiv);
+     const pagesDiv = document.getElementById('pages');
+    removeAllChildNodes(pagesDiv);
 
      // *Create a div containing cards group
     const cardGroup = document.createElement('div');
@@ -250,16 +252,60 @@ function showPhotos(data, pagesCount) {
         paginationUl.setAttribute('class', 'pagination');
         paginationNav.appendChild(paginationUl);
 
-        for (let i = 0; i < pagesCount; i++){
-            const paginationLi = document.createElement('li');
-            paginationLi.setAttribute('class', 'page-item');
-            const paginationHref = document.createElement('a');
-            paginationHref.setAttribute('class', 'page-link');
-            paginationHref.setAttribute('href', '#');
-            paginationHref.innerText = i+1;
-            paginationLi.appendChild(paginationHref);
-            paginationUl.appendChild(paginationLi);
+        // *Create a previous element
+        const previousLi = document.createElement('li');
+        previousLi.setAttribute('class', 'page-item');
+        const previousHref = document.createElement('a');
+        previousHref.setAttribute('class', 'page-link');
+        previousHref.setAttribute('href', '#');
+        previousHref.innerText = "Previous";
+        previousLi.appendChild(previousHref);
+        paginationUl.appendChild(previousLi);
+
+        // *Create first element
+        const firstLi = document.createElement('li');
+        firstLi.setAttribute('class', 'page-item active');
+        const firstHref = document.createElement('a');
+        firstHref.setAttribute('class', 'page-link');
+        firstHref.setAttribute('href', '#');
+        firstHref.innerText = 1;
+        firstLi.appendChild(firstHref);
+        paginationUl.appendChild(firstLi);
+
+        // * Generate elements in between
+        if (pagesCount < 3) {
+            for (let i = 1; i < pagesCount; i++) {
+                const paginationLi = document.createElement('li');
+                paginationLi.setAttribute('class', 'page-item');
+                const paginationHref = document.createElement('a');
+                paginationHref.setAttribute('class', 'page-link');
+                paginationHref.setAttribute('href', '#');
+                paginationHref.innerText = i + 1;
+                paginationLi.appendChild(paginationHref);
+                paginationUl.appendChild(paginationLi);
+            }
+        } else {
+            for (let i = 1; i < 3; i++) {
+                const paginationLi = document.createElement('li');
+                paginationLi.setAttribute('class', 'page-item');
+                const paginationHref = document.createElement('a');
+                paginationHref.setAttribute('class', 'page-link');
+                paginationHref.setAttribute('href', '#');
+                paginationHref.innerText = i + 1;
+                paginationLi.appendChild(paginationHref);
+                paginationUl.appendChild(paginationLi);
+            }
         }
+
+        // *Create a Next element
+        const nextLi = document.createElement('li');
+        nextLi.setAttribute('class', 'page-item');
+        const nextHref = document.createElement('a');
+        nextHref.setAttribute('class', 'page-link');
+        nextHref.setAttribute('href', '#');
+        nextHref.innerText = "Next";
+        nextLi.appendChild(nextHref);
+        paginationUl.appendChild(nextLi);
     }
 
     // *Loop through requested data
