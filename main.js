@@ -38,6 +38,9 @@ function displayEmptyRoverErr(message) {
     const solDayInput = document.getElementById('solar-day-input');
     removeAllChildNodes(solDayInput);
 
+     // * Get the gallery div and clean it from existing content
+    const photoDiv = document.getElementById("photo-gallery");
+    removeAllChildNodes(photoDiv);
 
     // * Generate description of selected rover
     const roverParagraph = document.createElement('p');
@@ -101,7 +104,6 @@ function displayRoverInfo(info, roverName) {
     
     solDayInputField.addEventListener('change', () => {
         displaySolDayInfo(info.photos, roverName, solDayInputField.value);
-        fetchBasic(roverName, solDayInputField.value)
     })
 }
 
@@ -131,17 +133,21 @@ function displaySolDayInfo(photoDesc, roverName, selectedSolarDay) {
 
     solDayDescParagraph.innerHTML = `On <strong>${selectedSolarDay}</strong> 
     solar day rover made a total of <strong>${totalPictures}</strong> pictures.`;
-   
-    displayCameraSelectors(camerasUsed, roverName, selectedSolarDay);
+    
+    if (totalPictures !== 0) {
+        let pagesCount = Math.ceil(totalPictures / 25);
+        displayCameraSelectors(camerasUsed, roverName, selectedSolarDay, pagesCount);
+    }
+
+    // displayCameraSelectors(camerasUsed, roverName, selectedSolarDay);
 }
 
 // * Display switches for cameras that were used at that specific day
-function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
+function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay, pagesCount) {
 
     const camInfo = document.getElementById("cameras-info");
     camInfo.innerHTML = "Each rover has a diffent set of cameras. Select the ones that are interesting for you:";
    
-
     const camerasList = document.getElementById("camera-selectors");
     removeAllChildNodes(camerasList);
 
@@ -169,11 +175,14 @@ function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
     selectAll.innerText = "All cameras";
     camSelect.appendChild(selectAll);
 
+    // * Make a first fetch and then respond to select change
+    fetchBasic(roverName, selectedSolarDay, pagesCount);
+
     camSelect.addEventListener('change', () => {
         if (camSelect.value === "ALL") {
-            fetchBasic(roverName, selectedSolarDay);
+            fetchBasic(roverName, selectedSolarDay, pagesCount);
         } else {
-            fetchExpanded(roverName, selectedSolarDay, camSelect.value);
+            fetchExpanded(roverName, selectedSolarDay, camSelect.value, pagesCount);
         }
     })
 
@@ -191,21 +200,21 @@ function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay) {
 // * ---------------------------
 
 // * BASIC FETCH - Takes rover name and solar day
-function fetchBasic(roverName, selectedSolarDay) {
+function fetchBasic(roverName, selectedSolarDay ,pagesCount) {
     
     const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&page=1&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
-        .then((data) => showPhotos(data))
+        .then((data) => showPhotos(data, pagesCount))
         .catch(() => console.log("Something went wrong"))
 }
 
-function fetchExpanded(roverName, selectedSolarDay, camName) {
+function fetchExpanded(roverName, selectedSolarDay, camName, pagesCount) {
     
     const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&camera=${camName}&page=1&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
-        .then((data) => showPhotos(data))
+        .then((data) => showPhotos(data, pagesCount))
         .catch(() => console.log("Something went wrong"))
 }
 
@@ -217,7 +226,11 @@ function removeAllChildNodes(parent) {
 }
 
 // * Generate photos on a webpage
-function showPhotos(data) {
+function showPhotos(data, pagesCount) {
+
+    console.log(data.photos);
+    console.log("Pages count : ", pagesCount);
+
 
     // * Get the gallery div and clean it from existing content
     const photoDiv = document.getElementById("photo-gallery");
@@ -228,6 +241,26 @@ function showPhotos(data) {
     cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-3 g-4");
     photoDiv.appendChild(cardGroup);
 
+    if (pagesCount > 1) {
+        const pagesDiv = document.getElementById('pages');
+        const paginationNav = document.createElement('nav');
+        paginationNav.setAttribute('aria-label', 'pagination-nav');
+        pagesDiv.appendChild(paginationNav);
+        const paginationUl = document.createElement('ul');
+        paginationUl.setAttribute('class', 'pagination');
+        paginationNav.appendChild(paginationUl);
+
+        for (let i = 0; i < pagesCount; i++){
+            const paginationLi = document.createElement('li');
+            paginationLi.setAttribute('class', 'page-item');
+            const paginationHref = document.createElement('a');
+            paginationHref.setAttribute('class', 'page-link');
+            paginationHref.setAttribute('href', '#');
+            paginationHref.innerText = i+1;
+            paginationLi.appendChild(paginationHref);
+            paginationUl.appendChild(paginationLi);
+        }
+    }
 
     // *Loop through requested data
     data.photos.forEach(element => {
