@@ -43,74 +43,47 @@
     </nav>
 
     <div class="container-fluid" id="gallery-nav">
-      <h2 class="text-center">Please select a rover:</h1>
-      <!-- <form id="select-rover-form"> -->
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              id="rover-select"
-            > 
-              <option selected value=""></option>
-              <option value="curiosity">Curiosity</option>
-              <option value="opportunity">Opportunity</option>
-              <option value="spirit">Spirit</option>
-            </select>
-          </div>
-          <!-- <div class="col-md-1">
-            <button type="submit" class="btn btn-primary">Select</button>
-          </div> -->
-        </div>
-      <!-- </form> -->
-
-      <!-- ! This will later be displayed dynamically after selecting a Rover -->
+      <h2 class="text-center">Please select a rover:</h2>
       <div class="row justify-content-center">
-        <div class="col-md-4" id="rover-info">
-    
+        <div class="col-md-4">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="rover-select"
+          >
+            <option selected value=""></option>
+            <option value="curiosity">Curiosity</option>
+            <option value="opportunity">Opportunity</option>
+            <option value="spirit">Spirit</option>
+          </select>
         </div>
       </div>
 
-      <!-- <form id="sol-days-select"> -->
-        <div class="row justify-content-center">
-          <div class="col-md-4">
-            <div class="input-group input-group-sm mb-3" id="solar-day-input">
-            </div>
-          </div>
-          <!-- <div class="col-md-1"id='sol-day-submit-div'>
-          </div> -->
-        </div>
-      <!-- </form> -->
-
       <div class="row justify-content-center">
-        <div class="col-md-4" id="sol-day-desc">
-        </div>
+        <div class="col-md-4" id="rover-info"></div>
       </div>
 
       <div class="row justify-content-center">
         <div class="col-md-4">
-          <p id="cameras-info">
-           
-          </p>
+          <div
+            class="input-group input-group-sm mb-3"
+            id="solar-day-input"
+          ></div>
         </div>
       </div>
 
-      <form id="cameras-select-form">
-        <div class="row justify-content-center">
-          <div class="col-md-4" id="camera-selectors"></div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-1" id="camera-select-submit">
-          </div>
-        </div>
-      </form>
+      <div class="row justify-content-center">
+        <div class="col-md-4" id="sol-day-desc"></div>
+      </div>
 
       <div class="row justify-content-center">
-        <div class="col-md-1">
-          <!-- <button type="submit" class="btn btn-primary" id="show-photos-button">
-            Display
-          </button> -->
+        <div class="col-md-4">
+          <p id="cameras-info"></p>
         </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-4" id="camera-selectors"></div>
       </div>
     </div>
 
