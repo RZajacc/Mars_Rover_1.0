@@ -180,7 +180,7 @@ function displayCameraSelectors(camerasUsed, roverName, selectedSolarDay, pagesC
         if (camSelect.value === "ALL") {
             fetchBasic(roverName, selectedSolarDay, pagesCount);
         } else {
-            fetchExpanded(roverName, selectedSolarDay, camSelect.value, pagesCount);
+            fetchExpanded(roverName, selectedSolarDay, camSelect.value);
         }
     })
 
@@ -202,16 +202,16 @@ function fetchBasic(roverName, selectedSolarDay ,pagesCount, page=1) {
     const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&page=${page}&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
-        .then((data) => showPhotos(data, roverName, selectedSolarDay, pagesCount, page))
+        .then((data) => showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page))
         .catch(() => console.log("Something went wrong"))
 }
 
-function fetchExpanded(roverName, selectedSolarDay, camName, pagesCount, page=1) {
+function fetchExpanded(roverName, selectedSolarDay, camName, page=1) {
     
     const fetchUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/${roverName}/photos?sol=${selectedSolarDay}&camera=${camName}&page=${page}&api_key=wlcQTmhFQql1kb762xbFcrn8imjFFLumfDszPmsi`;
     fetch(fetchUrl)
         .then((response) => response.json())
-        .then((data) => showPhotos(data, pagesCount, page))
+        .then((data) => showSelectedPhotos(data, roverName, selectedSolarDay, camName, page))
         .catch(() => console.log("Something went wrong"))
 }
 
@@ -223,12 +223,7 @@ function removeAllChildNodes(parent) {
 }
 
 // * Generate photos on a webpage
-function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
-
-    console.log("Current page : ", page);
-    console.log("Pages count : ", pagesCount);
-
-    
+function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
 
     // * Get the gallery div and clean it from existing content
     const photoDiv = document.getElementById("photo-gallery");
@@ -377,7 +372,7 @@ function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         }
 
         
-        // *Create a move to LAST PAGE element
+        // *Create a move to LAST element
         const nextLi = document.createElement('li');
         nextLi.setAttribute('class', 'page-item');
         const nextHref = document.createElement('a');
@@ -449,7 +444,152 @@ function showPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
 
 }
 
+function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
+        
+    // * Get the gallery div and clean it from existing content
+    const photoDiv = document.getElementById("photo-gallery");
+    removeAllChildNodes(photoDiv);
+    const pagesDiv = document.getElementById('pages');
+    removeAllChildNodes(pagesDiv);
+    
+     // *Create a div containing cards group
+    const cardGroup = document.createElement('div');
+    cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-3 g-4");
+    photoDiv.appendChild(cardGroup);
 
+    // * If requested page is empty then move to last working one
+    if (data.photos.length == 0) {
+        let targetPage = page - 1;
+        removeAllChildNodes(photoDiv);
+        fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
+    }
+
+    if (data.photos.length === 25 || page != 1) {
+        
+        // ? Create navigation and Previous element tab
+        const pagesDiv = document.getElementById('pages');
+        const paginationNav = document.createElement('nav');
+        paginationNav.setAttribute('aria-label', 'pagination-nav');
+        pagesDiv.appendChild(paginationNav);
+        const paginationUl = document.createElement('ul');
+        paginationUl.setAttribute('class', 'pagination');
+        paginationNav.appendChild(paginationUl);
+
+        // *Create a move to a FIRST PAGE element
+        const firstLi = document.createElement('li');
+        firstLi.setAttribute('class', 'page-item');
+        const firstHref = document.createElement('a');
+        firstHref.setAttribute('class', 'page-link');
+        firstHref.setAttribute('href', '#');
+        firstHref.innerText = "First Page";
+        firstLi.appendChild(firstHref);
+        paginationUl.appendChild(firstLi);
+
+        firstHref.addEventListener('click', () => {
+            let targetPage = 1;
+            removeAllChildNodes(photoDiv);
+            fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
+        })
+
+        // *Create a move to a PREVIOUS PAGE element
+        const previousLi = document.createElement('li');
+        previousLi.setAttribute('class', 'page-item');
+        const previousHref = document.createElement('a');
+        previousHref.setAttribute('class', 'page-link');
+        previousHref.setAttribute('href', '#');
+        previousHref.innerText = "Previous";
+        previousLi.appendChild(previousHref);
+        paginationUl.appendChild(previousLi);
+
+        previousHref.addEventListener('click', () => {
+            if (page > 1) {
+                let targetPage = page - 1;
+                removeAllChildNodes(photoDiv);
+                fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
+            } 
+        })
+
+        // * Create a CURRENT PAGE element
+        const currentLi = document.createElement('li');
+        currentLi.setAttribute('class', 'page-item');
+        const currentHref = document.createElement('a');
+        currentHref.setAttribute('class', 'page-link disabled');
+        currentHref.setAttribute('href', '');
+        currentHref.innerText = page;
+        currentLi.appendChild(currentHref);
+        paginationUl.appendChild(currentLi);
+        
+        
+        // *Create a move to NEXT element
+        const nextLi = document.createElement('li');
+        nextLi.setAttribute('class', 'page-item');
+        const nextHref = document.createElement('a');
+        nextHref.setAttribute('class', 'page-link');
+        nextHref.setAttribute('href', '#');
+        nextHref.innerText = "Next Page";
+        nextLi.appendChild(nextHref);
+        paginationUl.appendChild(nextLi);
+
+        nextHref.addEventListener('click', () => {
+            targetPage = page +1;
+            removeAllChildNodes(photoDiv);
+            fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
+        })
+    }
+
+    // *Loop through requested data
+    data.photos.forEach(element => {
+    
+        const colCard = document.createElement('div');
+        colCard.setAttribute('class', 'col');
+        cardGroup.appendChild(colCard);
+        
+        const cardBody = document.createElement('div');
+        cardBody.setAttribute('class', 'card h-100');
+        colCard.appendChild(cardBody);
+
+        // *Create card body elements
+        const cardPhoto = document.createElement('img');
+        cardPhoto.setAttribute('class', 'card-img-top');
+        cardPhoto.setAttribute('src', element.img_src);
+        cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
+        cardBody.appendChild(cardPhoto);
+
+        const photoDesc = document.createElement('ul');
+        photoDesc.setAttribute('class', 'list-group list-group-flush');
+        cardBody.appendChild(photoDesc);
+
+        const roverLi = document.createElement('li');
+        roverLi.setAttribute('class', 'list-group-item');
+        roverLi.innerHTML = "<strong>Rover : </strong>" + element.rover.name;
+        photoDesc.appendChild(roverLi);
+
+        const solLi = document.createElement('li');
+        solLi.setAttribute('class', 'list-group-item');
+        solLi.innerHTML = "<strong>Solar day : </strong>" + element.sol;
+        photoDesc.appendChild(solLi);
+
+        const idLi = document.createElement('li');
+        idLi.setAttribute('class', 'list-group-item');
+        idLi.innerHTML = "<strong>Photo ID : </strong>" + element.id;
+        photoDesc.appendChild(idLi);
+
+        const camLi = document.createElement('li');
+        camLi.setAttribute('class', 'list-group-item');
+        camLi.innerHTML = "<strong>Camera : </strong>" + element.camera.name;
+        photoDesc.appendChild(camLi);
+
+        // *Create a card footer
+        const cardFooter = document.createElement('div');
+        cardFooter.setAttribute('class', 'card-footer');
+        const footerContent = document.createElement('small');
+        footerContent.setAttribute('class', 'text-body-secondary');
+        footerContent.innerHTML = "Earth date : " + element.earth_date;
+        cardBody.appendChild(cardFooter);
+        cardFooter.appendChild(footerContent);
+    });
+   
+}
 
 
 
