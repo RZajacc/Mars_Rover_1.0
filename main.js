@@ -402,11 +402,16 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         colCard.appendChild(cardBody);
 
         // *Create card body elements
+        const photoRef = document.createElement('a');
+        photoRef.setAttribute('href', element.img_src);
+        photoRef.setAttribute('target', '_blank');
+        cardBody.append(photoRef);
         const cardPhoto = document.createElement('img');
         cardPhoto.setAttribute('class', 'card-img-top');
         cardPhoto.setAttribute('src', element.img_src);
         cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
-        cardBody.appendChild(cardPhoto);
+        photoRef.appendChild(cardPhoto);
+
 
         const photoDesc = document.createElement('ul');
         photoDesc.setAttribute('class', 'list-group list-group-flush');
@@ -441,7 +446,6 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         cardBody.appendChild(cardFooter);
         cardFooter.appendChild(footerContent);
     });
-
 }
 
 function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
@@ -549,11 +553,15 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
         colCard.appendChild(cardBody);
 
         // *Create card body elements
+        const photoRef = document.createElement('a');
+        photoRef.setAttribute('href', element.img_src);
+        photoRef.setAttribute('target', '_blank');
+        cardBody.append(photoRef);
         const cardPhoto = document.createElement('img');
         cardPhoto.setAttribute('class', 'card-img-top');
         cardPhoto.setAttribute('src', element.img_src);
         cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
-        cardBody.appendChild(cardPhoto);
+        photoRef.appendChild(cardPhoto);
 
         const photoDesc = document.createElement('ul');
         photoDesc.setAttribute('class', 'list-group list-group-flush');
