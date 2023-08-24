@@ -93,17 +93,33 @@ function displayRoverInfo(info, roverName) {
     solDayInput.appendChild(solDaylabel);
 
     const solDayInputField = document.createElement('input');
-    solDayInputField.setAttribute('type', 'text');
+    solDayInputField.setAttribute('type', 'number');
     solDayInputField.setAttribute('class', 'form-control');
+    solDayInputField.setAttribute('min', '0');
+    solDayInputField.setAttribute('max', info.max_sol);
     solDayInputField.setAttribute('aria-label', 'Sizing example input');
     solDayInputField.setAttribute('aria-describedby', 'inputGroup-sizing-sm');
     solDayInputField.setAttribute('id', 'selected-solar-day');
+    solDayInputField.setAttribute('placeholder', 'i.e. 1');
     solDayInput.appendChild(solDayInputField);
 
+    // * Invalid feedback div
+    const failureDiv = document.createElement('div');
+    failureDiv.setAttribute('class', 'invalid-feedback');
+    failureDiv.setAttribute('hidden', '');
+    failureDiv.innerHTML = `<strong>Value of range!</strong> You can choose between <strong>0</strong> and <strong>${info.max_sol}</strong>!`;
+    solDayInput.appendChild(failureDiv);
+    
     // * Add value of a solar day
-    // ! REQUIRED VALIDATION
     solDayInputField.addEventListener('change', () => {
+    if (solDayInputField.value >= 0 && solDayInputField.value <= info.max_sol) {
+        solDayInputField.setAttribute('class', 'form-control is-valid');
+        failureDiv.setAttribute('hidden', '');
         displaySolDayInfo(info.photos, roverName, solDayInputField.value);
+    } else {
+        solDayInputField.setAttribute('class', 'form-control is-invalid');
+        failureDiv.toggleAttribute('hidden');
+    }
     })
 }
 
@@ -600,6 +616,10 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
 }
 
 
-
-
-
+let sum = 0;
+for (let i = 0; i < 3; i++) {
+    for (let j = 5; j > 2; j--) {
+        sum = j + i;
+    }
+}
+console.log(sum);
