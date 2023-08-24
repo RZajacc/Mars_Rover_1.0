@@ -150,9 +150,20 @@ function displaySolDayInfo(photoDesc, roverName, selectedSolarDay) {
     solDayDescParagraph.innerHTML = `On <strong>${selectedSolarDay}</strong> 
     solar day rover made a total of <strong>${totalPictures}</strong> pictures.`;
     
+    // * If there are any pictures display them, if not, clear the screen
     if (totalPictures !== 0) {
         let pagesCount = Math.ceil(totalPictures / 25);
         displayCameraSelectors(camerasUsed, roverName, selectedSolarDay, pagesCount);
+    } else {
+        const camerasList = document.getElementById("camera-selectors");
+        removeAllChildNodes(camerasList);
+        const camInfo = document.getElementById("cameras-info");
+        camInfo.innerHTML = "";
+        // * Get the gallery div and clean it from existing content
+        const photoDiv = document.getElementById("photo-gallery");
+        removeAllChildNodes(photoDiv);
+        const pagesDiv = document.getElementById('pages');
+         removeAllChildNodes(pagesDiv);
     }
 }
 
@@ -478,7 +489,7 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
     photoDiv.appendChild(cardGroup);
 
     // * If requested page is empty then move to last working one
-    if (data.photos.length == 0) {
+    if (data.photos.length === 0) {
         let targetPage = page - 1;
         removeAllChildNodes(photoDiv);
         fetchExpanded(roverName, selectedSolarDay, camName, targetPage);

@@ -21,8 +21,10 @@ body {
 }
 
 #gen-desc {
-    margin-top: 3%;
-    width: 60%;
+    padding: 10px;
+    /* background-color: #0b3d91; */
+    background-color: black;
+    color: white;
 }
 
 #gallery-nav {
