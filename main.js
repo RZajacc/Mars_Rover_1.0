@@ -77,7 +77,7 @@ function displayRoverInfo(info, roverName) {
     
     if (info.status === "active") {
         missionStatus.innerText = info.status.toUpperCase();
-        missionStatus.setAttribute('style', 'color:green');
+        missionStatus.setAttribute('style', 'color:#7CFC00');
     } else {
         missionStatus.innerText = info.status.toUpperCase();
         missionStatus.setAttribute('style', 'color:red');
