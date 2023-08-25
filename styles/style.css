@@ -50,7 +50,7 @@ body {
    font-size: 1.15rem;
 }
 
-.accordion-button:(.collapsed) {
+.accordion-button:is(.collapsed) {
     background-color: white;
     color: black;
 }
@@ -60,7 +60,7 @@ body {
     color: white;
 }
 
-/* *********Pictures page************* */
+/* *********CONTENT_PAGE************* */
 #gallery-nav {
     background-color: black;
     color: white;
@@ -69,7 +69,6 @@ body {
 }
 
 #photo-gallery {
-    width: 80%;
     margin-bottom: 2%;
 }
 

@@ -1,4 +1,3 @@
-
 // * -------------------------
 // * SELECTORS FOR REQUESTS *
 // * -------------------------
@@ -260,9 +259,67 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
 
      // *Create a div containing cards group
     const cardGroup = document.createElement('div');
-    cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-3 g-4");
+    cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-2 g-3");
     photoDiv.appendChild(cardGroup);
 
+    // *Loop through requested data
+    data.photos.forEach(element => {
+    
+        const colCard = document.createElement('div');
+        colCard.setAttribute('class', 'col');
+        cardGroup.appendChild(colCard);
+        
+        const cardBody = document.createElement('div');
+        cardBody.setAttribute('class', 'card h-100');
+        colCard.appendChild(cardBody);
+
+        // *Create card body elements
+        const photoRef = document.createElement('a');
+        photoRef.setAttribute('href', element.img_src);
+        photoRef.setAttribute('target', '_blank');
+        cardBody.append(photoRef);
+        const cardPhoto = document.createElement('img');
+        cardPhoto.setAttribute('class', 'card-img-top');
+        cardPhoto.setAttribute('src', element.img_src);
+        cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
+        photoRef.appendChild(cardPhoto);
+
+
+        const photoDesc = document.createElement('ul');
+        photoDesc.setAttribute('class', 'list-group list-group-flush');
+        cardBody.appendChild(photoDesc);
+
+        const roverLi = document.createElement('li');
+        roverLi.setAttribute('class', 'list-group-item');
+        roverLi.innerHTML = "<strong>Rover : </strong>" + element.rover.name;
+        photoDesc.appendChild(roverLi);
+
+        const solLi = document.createElement('li');
+        solLi.setAttribute('class', 'list-group-item');
+        solLi.innerHTML = "<strong>Solar day : </strong>" + element.sol;
+        photoDesc.appendChild(solLi);
+
+        const idLi = document.createElement('li');
+        idLi.setAttribute('class', 'list-group-item');
+        idLi.innerHTML = "<strong>Photo ID : </strong>" + element.id;
+        photoDesc.appendChild(idLi);
+
+        const camLi = document.createElement('li');
+        camLi.setAttribute('class', 'list-group-item');
+        camLi.innerHTML = "<strong>Camera : </strong>" + element.camera.name;
+        photoDesc.appendChild(camLi);
+
+        // *Create a card footer
+        const cardFooter = document.createElement('div');
+        cardFooter.setAttribute('class', 'card-footer');
+        const footerContent = document.createElement('small');
+        footerContent.setAttribute('class', 'text-body-secondary');
+        footerContent.innerHTML = "Earth date : " + element.earth_date;
+        cardBody.appendChild(cardFooter);
+        cardFooter.appendChild(footerContent);
+    });
+
+    // * Create a Pagination if there are more elements
     if (pagesCount > 1) {
         
         // ? Create navigation and Previous element tab
@@ -271,7 +328,7 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         paginationNav.setAttribute('aria-label', 'pagination-nav');
         pagesDiv.appendChild(paginationNav);
         const paginationUl = document.createElement('ul');
-        paginationUl.setAttribute('class', 'pagination');
+        paginationUl.setAttribute('class', 'pagination justify-content-center');
         paginationNav.appendChild(paginationUl);
 
         // *Create a move to a FIRST PAGE element
@@ -398,7 +455,6 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
             }
         }
 
-        
         // *Create a move to LAST element
         const nextLi = document.createElement('li');
         nextLi.setAttribute('class', 'page-item');
@@ -413,9 +469,22 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
             targetPage = pagesCount;
             removeAllChildNodes(photoDiv);
             fetchBasic(roverName, selectedSolarDay, pagesCount, targetPage);
-            
         })
     }
+}
+
+function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
+        
+    // * Get the gallery div and clean it from existing content
+    const photoDiv = document.getElementById("photo-gallery");
+    removeAllChildNodes(photoDiv);
+    const pagesDiv = document.getElementById('pages');
+    removeAllChildNodes(pagesDiv);
+    
+     // *Create a div containing cards group
+    const cardGroup = document.createElement('div');
+    cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-2 g-3");
+    photoDiv.appendChild(cardGroup);
 
     // *Loop through requested data
     data.photos.forEach(element => {
@@ -438,7 +507,6 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         cardPhoto.setAttribute('src', element.img_src);
         cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
         photoRef.appendChild(cardPhoto);
-
 
         const photoDesc = document.createElement('ul');
         photoDesc.setAttribute('class', 'list-group list-group-flush');
@@ -473,20 +541,6 @@ function showAllPhotos(data, roverName, selectedSolarDay, pagesCount, page) {
         cardBody.appendChild(cardFooter);
         cardFooter.appendChild(footerContent);
     });
-}
-
-function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
-        
-    // * Get the gallery div and clean it from existing content
-    const photoDiv = document.getElementById("photo-gallery");
-    removeAllChildNodes(photoDiv);
-    const pagesDiv = document.getElementById('pages');
-    removeAllChildNodes(pagesDiv);
-    
-     // *Create a div containing cards group
-    const cardGroup = document.createElement('div');
-    cardGroup.setAttribute("class", "row row-cols-1 row-cols-md-3 g-4");
-    photoDiv.appendChild(cardGroup);
 
     // * If requested page is empty then move to last working one
     if (data.photos.length === 0) {
@@ -495,6 +549,7 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
         fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
     }
 
+    // * Create a pagination 
     if (data.photos.length === 25 || page != 1) {
         
         // ? Create navigation and Previous element tab
@@ -503,7 +558,7 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
         paginationNav.setAttribute('aria-label', 'pagination-nav');
         pagesDiv.appendChild(paginationNav);
         const paginationUl = document.createElement('ul');
-        paginationUl.setAttribute('class', 'pagination');
+        paginationUl.setAttribute('class', 'pagination justify-content-center');
         paginationNav.appendChild(paginationUl);
 
         // *Create a move to a FIRST PAGE element
@@ -567,70 +622,5 @@ function showSelectedPhotos(data, roverName, selectedSolarDay, camName, page) {
             fetchExpanded(roverName, selectedSolarDay, camName, targetPage);
         })
     }
-
-    // *Loop through requested data
-    data.photos.forEach(element => {
-    
-        const colCard = document.createElement('div');
-        colCard.setAttribute('class', 'col');
-        cardGroup.appendChild(colCard);
-        
-        const cardBody = document.createElement('div');
-        cardBody.setAttribute('class', 'card h-100');
-        colCard.appendChild(cardBody);
-
-        // *Create card body elements
-        const photoRef = document.createElement('a');
-        photoRef.setAttribute('href', element.img_src);
-        photoRef.setAttribute('target', '_blank');
-        cardBody.append(photoRef);
-        const cardPhoto = document.createElement('img');
-        cardPhoto.setAttribute('class', 'card-img-top');
-        cardPhoto.setAttribute('src', element.img_src);
-        cardPhoto.setAttribute('alt', "Made on: " + element.earth_date);
-        photoRef.appendChild(cardPhoto);
-
-        const photoDesc = document.createElement('ul');
-        photoDesc.setAttribute('class', 'list-group list-group-flush');
-        cardBody.appendChild(photoDesc);
-
-        const roverLi = document.createElement('li');
-        roverLi.setAttribute('class', 'list-group-item');
-        roverLi.innerHTML = "<strong>Rover : </strong>" + element.rover.name;
-        photoDesc.appendChild(roverLi);
-
-        const solLi = document.createElement('li');
-        solLi.setAttribute('class', 'list-group-item');
-        solLi.innerHTML = "<strong>Solar day : </strong>" + element.sol;
-        photoDesc.appendChild(solLi);
-
-        const idLi = document.createElement('li');
-        idLi.setAttribute('class', 'list-group-item');
-        idLi.innerHTML = "<strong>Photo ID : </strong>" + element.id;
-        photoDesc.appendChild(idLi);
-
-        const camLi = document.createElement('li');
-        camLi.setAttribute('class', 'list-group-item');
-        camLi.innerHTML = "<strong>Camera : </strong>" + element.camera.name;
-        photoDesc.appendChild(camLi);
-
-        // *Create a card footer
-        const cardFooter = document.createElement('div');
-        cardFooter.setAttribute('class', 'card-footer');
-        const footerContent = document.createElement('small');
-        footerContent.setAttribute('class', 'text-body-secondary');
-        footerContent.innerHTML = "Earth date : " + element.earth_date;
-        cardBody.appendChild(cardFooter);
-        cardFooter.appendChild(footerContent);
-    });
-   
 }
 
-
-let sum = 0;
-for (let i = 0; i < 3; i++) {
-    for (let j = 5; j > 2; j--) {
-        sum = j + i;
-    }
-}
-console.log(sum);
