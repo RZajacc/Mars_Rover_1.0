@@ -14,31 +14,41 @@
     <title>Content</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-warning">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">
-          <img src="assets/rover.jpg" alt="Rover drawing" id="rover" />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="index.html"
-              >About</a
-            >
-            <a class="nav-link" href="content.html">Pictures</a>
-            <a class="nav-link" href="contact.html">Contact</a>
+        <div class="col-2"></div>
+        <div class="col-5">
+          <a class="navbar-brand" href="index.html">
+            <img
+              src="assets/rover.jpg"
+              alt="Rover drawing"
+              id="rover-nav-pic"
+            />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="col-3">
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="index.html"
+                >About</a
+              >
+              <a class="nav-link" href="content.html">Pictures</a>
+              <a class="nav-link" href="contact.html">Contact</a>
+            </div>
           </div>
         </div>
+        <div class="col-2"></div>
       </div>
     </nav>
 
@@ -91,6 +101,19 @@
     <div class="container-fluid" id="photo-gallery"></div>
 
     <div class="container-fluid col-md-4" id="pages"></div>
+
+    <footer>
+      <div class="container-fluid bg-light fixed-bottom">
+        <div class="row text-center align-items-center footer-row">
+          <div class="col">&copy; Rafał Zając</div>
+        </div>
+        <div class="row text-center align-items-center footer-row">
+          <div class="col">
+            Contact me: <a href="mailto:examplemail@mail.com">&#128231;</a>
+          </div>
+        </div>
+      </div>
+    </footer>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
