@@ -10,7 +10,11 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <script src="scripts/contact.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <script src="scripts/contact.js" defer></script>
     <title>Contact</title>
   </head>
   <body>
@@ -51,6 +55,66 @@
         <div class="col-2"></div>
       </div>
     </nav>
+
+    <!-- *CONTACT FORM -->
+    <form id="contact-form">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <div class="mb-3">
+              <h4 id="form-desc">
+                If you want to contact me please fill the form below:
+              </h4>
+              <label for="name" class="form-label"
+                >Please provide your name:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="from_name"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="emailAdress" class="form-label"
+                >Your email address:</label
+              >
+              <input
+                type="email"
+                name="user_mail"
+                class="form-control"
+                id="emailAdress"
+                aria-describedby="emailField"
+                required
+              />
+              <div id="emailField" class="form-text">
+                We'll need it in order to respond to your request.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="message" class="form-label">Your message:</label>
+              <textarea
+                class="form-control"
+                aria-label="message"
+                rows="5"
+                id="message"
+                name="message"
+                required
+              ></textarea>
+            </div>
+
+            <div class="mb-3 text-center">
+              <button class="btn btn-success" type="submit">
+                Submit your message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
 
     <footer>
       <div class="container-fluid bg-light fixed-bottom">
