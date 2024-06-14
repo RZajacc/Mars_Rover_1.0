@@ -4,8 +4,8 @@
 *It is the first first attempt to builiding this app. Only vanilla Javascript was used here with Bootstrap.*
 
 *If you want to see other versions of the project as well please check:*
-**v2.0** is build vith Javascript+Typescript and styled with Bootstrap. Also page logic was restructured completely, unit tests with Vitest are added and in some basic form also Webpack. Check [here](https://github.com/RZajacc/Mars_Rover_2.0)
-**v3.0** is build vith Javascript+Typescript and styled with CSS+SCSS. Apart from Unit tests I'm working on End-to-end testing with Cypress, and trying to extend the use of Webpack. Check [here](https://github.com/RZajacc/MarsRover_3.0)
+* **v2.0** is build vith Javascript+Typescript and styled with Bootstrap. Also page logic was restructured completely, unit tests with Vitest are added and in some basic form also Webpack. Check [here](https://github.com/RZajacc/Mars_Rover_2.0).
+* **v3.0** is build vith Javascript+Typescript and styled with CSS+SCSS. Apart from Unit tests I'm working on End-to-end testing with Cypress, and trying to extend the use of Webpack. Check [here](https://github.com/RZajacc/MarsRover_3.0).
 
 ### Description:
 
